@@ -2,7 +2,7 @@ name: Supa-backup
 
 on:
   schedule:
-    - cron: '0 */3 * * *' # Runs every 3 hours
+    - cron: '0 */3 * * *'
   workflow_dispatch:
 
 jobs:
@@ -11,12 +11,14 @@ jobs:
     permissions:
       contents: write
     env:
-      supabase_db_url: ${{ secrets.SUPABASE_DB_URL }} # Store this secret in your repo settings
+      supabase_db_url: ${{ secrets.SUPABASE_DB_URL }} # Jetzt mit Supavisor String
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
         with:
           version: latest
+      - name: Backup roles
+        run: supabase db dump --db-url "$supabase_db_url" -f roles.sql --role-only
       - name: Backup schema
         run: supabase db dump --db-url "$supabase_db_url" -f schema.sql
       - name: Backup data

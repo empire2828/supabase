@@ -352,6 +352,33 @@ COPY "public"."bookings" ("id", "email", "apartment", "arrival", "departure", "c
 37	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2023-05-02	2023-05-05	2023-12-18	Direct booking	Jana Schmidt	2	0		modification of booking	50697488	30298534	0k9vgeez5n8xgc91w7wrjbsc9kdg@agoda-messaging.com	\N			DE	\N	\N	\N	\N	\N	60	0	0	\N	Yes	No	No		3	bookings_data	2023-05-05
 38	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2023-05-05	2023-05-06	2023-04-28	Airbnb	Simone Jahn	1	0	de	modification of booking	38724106	30324361	\N	+491629096000				\N	\N	\N	\N	\N	46	0	0	8.21	Yes	No	No		1	bookings_data	2023-05-06
 39	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2023-05-06	2023-05-07	2023-05-04	Booking.com	Jaqueline Schmidt	2	0	en	cancellation	39035803	30581482	jschmi.151966@guest.booking.com	+49 15678 986675				\N	\N	\N	\N	\N	54	\N	\N	10.8	No	No	No		1	bookings_data	2023-05-07
+103	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2023-07-29	2023-08-05	2023-03-30	Direct booking	Thomas Apel	4	2		modification of booking	37236718	29106058	apeltom@web.de	49 1778404373				\N	\N	\N	\N	\N	1045	189	0	\N	Yes	Yes	No		3	monthly_adj	2023-07-31
+125	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2023-12-28	2024-01-03	2023-07-04	Website	Maria Rusinova	6	0	de	modification of booking	42208310	33203771	m.e.rusinova@gmail.com	0163-3348370	30449	Hannover 		\N	\N	\N	\N	\N	1462.9	292.58	0	\N	Yes	Yes	No	Niemeyerstr. 17A	4	monthly_adj	2023-12-31
+136	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-03-29	2024-04-02	2023-05-17	Booking.com	Silke Hohengarten	5	0	de	modification of booking	39714032	31137893	shohen.696340@guest.booking.com	+49 171 9337995				\N	\N	\N	\N	\N	972	0	0	145.8	Yes	No	No		3	monthly_adj	2024-03-31
+140	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-04-19	2024-05-03	2023-09-29	Ferienhausmiete.de	Clemens Gutsmann	4	0		modification of booking	46855876	37065943	csc.gutsmann@arcor.de	01773253457	45277	Essen	Deutschland	\N	\N	\N	\N	\N	2044.55	384	0	\N	Yes	Yes	No	Am Ehrenmal 28	12	monthly_adj	2024-04-30
+147	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-05-26	2024-06-05	2023-08-18	Traum-Ferienwohnungen	Harald Gohlke	2	0		modification of booking	44603381	35281865	harald-gohlke@t-online.de	01753113485	47239	Duisburg		\N	\N	\N	\N	\N	1803	363	0	\N	Yes	Yes	No	Karrenweg 55	6	monthly_adj	2024-05-31
+151	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-06-29	2024-07-06	2023-08-13	Booking.com	Mark Mathew	5	2	de	cancellation	44363906	34999094	mmathe.972170@guest.booking.com	+49 172 3763640	01237	Dresden	\N	\N	\N	\N	\N	\N	2091.45	0	0	313.72	No	No	No	Basedowstr. 22	2	monthly_adj	2024-06-30
+152	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-06-29	2024-07-06	2024-04-27	Airbnb	Christian Necke	3	1	de	modification of booking	58404098	46556378	\N	+4917632485595				\N	\N	\N	\N	\N	1502.3	0	0	225.35	Yes	No	No		2	monthly_adj	2024-06-30
+160	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-07-28	2024-08-04	2023-07-13	Traum-Ferienwohnungen	Kathleen Jungmann	4	4		modification of booking	42712043	33621005	kathleen.jungmann@gmx.de	\N	47475	Kamp-Lintfort		\N	\N	\N	\N	\N	1889	377.8	0	\N	Yes	Yes	No	Friedrich-Heinrich-Allee 34	4	monthly_adj	2024-07-31
+165	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-08-31	2024-09-07	2023-06-22	Booking.com	Susanne Kiefer	4	1	de	cancellation	41551514	32656988	skiefe.812830@guest.booking.com	+49 174 3085995	\N	\N	\N	\N	\N	\N	\N	\N	1943.79	\N	\N	291.57	No	No	No	\N	1	monthly_adj	2024-08-31
+166	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-08-31	2024-09-07	2024-08-22	Blocked channel	\N	0	0		modification of booking	70089301	\N	\N	\N				\N	\N	\N	\N	\N	0	0	0	\N	No	No	No		1	monthly_adj	2024-08-31
+171	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-09-28	2024-10-05	2023-09-20	Website	Stephanie Glaeser	8	0	de	modification of booking	46342081	36637363	glaeser.stephanie@t-online.de	01605519941	99096	Erfurt	Deutschland	\N	\N	\N	\N	\N	1515.61	266.32	0	\N	Yes	Yes	No	Geibelstraße 42	3	monthly_adj	2024-09-30
+176	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-10-27	2024-11-02	2024-06-30	Booking.com	Uwe Babenschneider	2	2	de	modification of booking	64722116	51782151	ubaben.542763@guest.booking.com	+49 162 8948196	80639	München		\N	\N	\N	\N	\N	1140.44	0	0	171.07	Yes	No	No	Birketweg 57	5	monthly_adj	2024-10-31
+182	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-12-26	2025-01-02	2023-11-19	Booking.com	Sandra Janzen	4	4	de	cancellation	49311224	39072800	sjanze.260621@guest.booking.com	+49 173 7508828	32312	Luebbecke	\N	\N	\N	\N	\N	\N	1932.73	\N	\N	289.91	No	No	No	Molkereiweg 1a	6	monthly_adj	2024-12-31
+183	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-12-28	2025-01-04	2023-12-31	Booking.com	Andrea Querner	5	0	de	cancellation	51208766	40621268	aquern.522887@guest.booking.com	+49 160 7589094	01326	Dresden		\N	\N	\N	\N	\N	1738	\N	\N	260.7	No	No	No	Wachwitzgrund 55	4	monthly_adj	2024-12-31
+184	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2024-12-28	2025-01-04	2024-01-15	Direct booking	Andrea Querner	5	0		modification of booking	52125746	40621268	Andreaquerner@gmail.com	+49 160 7589094	01326	Dresden		\N	\N	\N	\N	\N	1565	313	0	\N	Yes	Yes	No	Wachwitzgrund 55	4	monthly_adj	2024-12-31
+201	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2025-04-30	2025-05-05	2024-03-29	Blocked channel	\N	0	0		modification of booking	56612624	57284616	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	0	0	\N	No	No	No	\N	1	monthly_adj	2025-04-30
+210	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2025-05-29	2025-06-02	2025-05-28	Blocked channel	Wasserschaden	\N	\N		reservation	98684018	79783733	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	0	\N	\N	No	No	No	\N	3	monthly_adj	2025-05-31
+219	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2025-06-28	2025-07-12	2024-08-02	Booking.com	Andreas Grunow	3	4	de	cancellation	68040451	54561351	agruno.905145@guest.booking.com	+49 163 1603766	94377	Steinach	\N	\N	\N	\N	\N	\N	3774.48	\N	\N	566.17	No	No	No	Hohenburgstr 19	3	monthly_adj	2025-06-30
+220	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2025-06-28	2025-07-12	2024-08-27	Booking.com	Elisabeth Merkel	4	4	de	modification of booking	70507371	56625976	emerke.720545@guest.booking.com	+49 1511 9484469	98646	Hildburghausen	\N	\N	\N	\N	\N	\N	4102.74	0	0	615.41	No	No	No	Kuhgasse 14	3	monthly_adj	2025-06-30
+223	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2025-07-26	2025-08-02	2024-07-24	Booking.com	Marleen Mair	4	3	de	cancellation	67219311	53877071	mmair.868715@guest.booking.com	+49 1517 0098582	\N	Bernau	\N	\N	\N	\N	\N	\N	2236.64	\N	\N	335.5	No	No	No	Käthe-Paulus-Str. 1	6	monthly_adj	2025-07-31
+224	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2025-07-26	2025-08-02	2025-01-14	HomeToGo	Nicolas Jost	4	3		modification of booking	83814703	67489818	njost.ch@gmail.com	0794647500	\N	\N	CH	\N	\N	\N	\N	\N	2203.72	\N	\N	393.37	No	No	No	\N	6	monthly_adj	2025-07-31
+229	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2025-08-30	2025-09-06	2025-05-29	Website	Stefan Betz	2	0	de	modification of booking	98780038	79862553	stefan.betz1@gmx.de	025918921349	59348	Lüdinghausen	Deutschland	\N	\N	\N	\N	\N	1334.54	266.91	0	\N	No	Yes	No	Im Ried, 1b	2	monthly_adj	2025-08-31
+237	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2025-09-28	2025-10-05	2024-10-14	Ferienhausmiete.de	Hannelore Beewen	2	\N		cancellation	75400878	60645693	hannebeewen@gmail.com	01711420941	49356	Diepholz	Deutschland	\N	\N	\N	\N	\N	1310	262	\N	\N	No	No	No	willenberg  55	3	monthly_adj	2025-09-30
+246	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2025-12-27	2026-01-03	2025-01-11	Airbnb	Alfred Krohmer	4	3	de	modification of booking	83526463	67252208	\N	+491724645688	\N	\N	\N	\N	\N	\N	\N	\N	2023.17	0	0	303.48	No	No	No	\N	5	monthly_adj	2025-12-31
+28	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2023-03-30	2023-04-02	2023-03-30	Direct booking	Tanja Bee-Weinelt	4	0		modification of booking	37235191	32794199	\N	\N				\N	\N	\N	\N	\N	414	0	0	\N	Yes	No	No		2	monthly_adj	2023-03-31
+26	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2022-12-27	2023-01-02	2023-05-15	Direct booking	Seidel	0	0		modification of booking	39600347	41743280	johanna.seidel90@gmx.de	\N	72072	Tübingen		\N	\N	\N	\N	\N	1050	0	0	\N	Yes	No	No	Derendinger Straße 27	5	monthly_adj	2022-12-31
+110	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2023-09-29	2023-10-03	2023-05-05	Traum-Ferienwohnungen	Ulrike Olberg	4	2		modification of booking	39089833	30625258	u.olberg@freenet.de	01726514000				\N	\N	\N	\N	\N	784	156.8	0	\N	Yes	Yes	No		2	monthly_adj	2023-09-30
 283	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2099-11-08	2099-11-09	2025-04-09	Direct booking	Dirk Klemer	1	0		cancellation	93367719	75418899	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	0	\N	\N	No	No	No	\N	1	bookings_data	2099-11-09
 284	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2099-11-13	2099-11-14	2025-04-09	Direct booking	Dirk Klemer	1	0		cancellation	93333239	75389399	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	0	\N	\N	No	No	No	\N	1	bookings_data	2099-11-14
 285	dirk.klemer@gmail.com	Haus Sansibar auf Poel	2099-11-14	2099-11-15	2025-04-10	Direct booking	Max Mustermann	1	0		cancellation	93407979	75452824	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	0	0	\N	\N	No	No	No	\N	1	bookings_data	2099-11-15
@@ -413,13 +440,6 @@ COPY "storage"."s3_multipart_uploads_parts" ("id", "upload_id", "size", "part_nu
 --
 
 SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 1, false);
-
-
---
--- Name: bookings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."bookings_id_seq"', 762, true);
 
 
 --

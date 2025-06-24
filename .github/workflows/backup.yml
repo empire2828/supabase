@@ -11,12 +11,16 @@ jobs:
     permissions:
       contents: write
     env:
-      supabase_db_url: ${{ secrets.SUPABASE_DB_URL }} # Jetzt mit Supavisor String
+      supabase_db_url_base64: ${{ secrets.SUPABASE_DB_URL_BASE64 }}
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
         with:
           version: latest
+      - name: Decode connection string
+        run: |
+          echo "$supabase_db_url_base64" | base64 -d > /tmp/db_url
+          echo "supabase_db_url=$(cat /tmp/db_url)" >> $GITHUB_ENV
       - name: Backup roles
         run: supabase db dump --db-url "$supabase_db_url" -f roles.sql --role-only
       - name: Backup schema

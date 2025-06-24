@@ -109,12 +109,6 @@ CREATE TABLE IF NOT EXISTS "public"."bookings" (
     "prepayment_paid" "text",
     "deposit_paid" "text",
     "address_street" "text",
-    "revenue" numeric GENERATED ALWAYS AS (COALESCE("price", (0)::real)) STORED,
-    "nights" integer GENERATED ALWAYS AS (
-CASE
-    WHEN (("departure" IS NULL) OR ("arrival" IS NULL)) THEN NULL::integer
-    ELSE ("departure" - "arrival")
-END) STORED,
     "booking_lead_time" integer GENERATED ALWAYS AS (
 CASE
     WHEN (("created_at" IS NULL) OR ("arrival" IS NULL)) THEN NULL::integer
@@ -138,6 +132,18 @@ CASE
     WHEN (("price" IS NULL) OR ("arrival" IS NULL) OR ("departure" IS NULL) OR ("nights_mthly" IS NULL)) THEN NULL::numeric
     WHEN (("departure" - "arrival") = 0) THEN NULL::numeric
     ELSE "round"(((("price")::numeric / (("departure" - "arrival"))::numeric) * ("nights_mthly")::numeric), 2)
+END) STORED,
+    "bookings" real,
+    "revenue" numeric GENERATED ALWAYS AS (
+CASE
+    WHEN ("adjustment" = 'monthly_adj'::"text") THEN (0)::real
+    ELSE COALESCE("price", (0)::real)
+END) STORED,
+    "nights" integer GENERATED ALWAYS AS (
+CASE
+    WHEN ("adjustment" = 'monthly_adj'::"text") THEN 0
+    WHEN (("arrival" IS NULL) OR ("departure" IS NULL)) THEN NULL::integer
+    ELSE ("departure" - "arrival")
 END) STORED
 );
 

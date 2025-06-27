@@ -115,146 +115,130 @@ CREATE TABLE IF NOT EXISTS "public"."bookings" (
     "prepayment_paid" "text",
     "deposit_paid" "text",
     "address_street" "text",
-    "booking_lead_time" integer GENERATED ALWAYS AS (
-CASE
-    WHEN (("created_at" IS NULL) OR ("arrival" IS NULL)) THEN NULL::integer
-    ELSE ("arrival" - "created_at")
-END) STORED,
-    "nights_mthly" integer,
-    "adjustment" "text" DEFAULT 'bookings_data'::"text",
-    "stay_date_mthly" "date",
-    "booking_count" integer GENERATED ALWAYS AS (
-CASE
-    WHEN ("adjustment" = 'bookings_data'::"text") THEN 1
-    ELSE 0
-END) STORED,
-    "cancellation_count" integer GENERATED ALWAYS AS (
-CASE
-    WHEN (("type" = 'cancellation'::"text") AND ("adjustment" = 'bookings_data'::"text")) THEN 1
-    ELSE 0
-END) STORED,
-    "revenue_mthly" numeric GENERATED ALWAYS AS (
-CASE
-    WHEN (("price" IS NULL) OR ("arrival" IS NULL) OR ("departure" IS NULL) OR ("nights_mthly" IS NULL)) THEN NULL::numeric
-    WHEN (("departure" - "arrival") = 0) THEN NULL::numeric
-    ELSE "round"(((("price")::numeric / (("departure" - "arrival"))::numeric) * ("nights_mthly")::numeric), 2)
-END) STORED,
-    "bookings" real,
-    "revenue" numeric GENERATED ALWAYS AS (
-CASE
-    WHEN ("adjustment" = 'monthly_adj'::"text") THEN (0)::real
-    ELSE COALESCE("price", (0)::real)
-END) STORED,
-    "nights" integer GENERATED ALWAYS AS (
-CASE
-    WHEN ("adjustment" = 'monthly_adj'::"text") THEN 0
-    WHEN (("arrival" IS NULL) OR ("departure" IS NULL)) THEN NULL::integer
-    ELSE ("departure" - "arrival")
-END) STORED,
-    "id" bigint NOT NULL
+    "mth_adj" "text" DEFAULT 'bookings'::"text",
+    "stay_mth" "date" GENERATED ALWAYS AS ("departure") STORED
 );
 
 
 ALTER TABLE "public"."bookings" OWNER TO "postgres";
 
 
-CREATE TABLE IF NOT EXISTS "public"."bookings_duplicate" (
-    "id" bigint NOT NULL,
-    "email" "text",
-    "apartment" "text",
-    "arrival" "date",
-    "departure" "date",
-    "created_at" "date",
-    "channel_name" "text",
-    "guestname" "text",
-    "adults" integer,
-    "children" integer,
-    "language" "text",
-    "type" "text",
-    "reservation_id" integer NOT NULL,
-    "guestid" integer,
-    "guest_email" "text",
-    "phone" "text",
-    "address_postalcode" "text",
-    "address_city" "text",
-    "address_country" "text",
-    "screener_openai_job" "text",
-    "screener_address_check" boolean,
-    "screener_google_linkedin" "text",
-    "screener_phone_check" boolean,
-    "screener_disposable_email" boolean,
-    "price" real,
-    "prepayment" real,
-    "deposit" real,
-    "commission_included" real,
-    "price_paid" "text",
-    "prepayment_paid" "text",
-    "deposit_paid" "text",
-    "address_street" "text",
-    "booking_lead_time" integer GENERATED ALWAYS AS (
-CASE
-    WHEN (("created_at" IS NULL) OR ("arrival" IS NULL)) THEN NULL::integer
-    ELSE ("arrival" - "created_at")
-END) STORED,
-    "nights_mthly" integer,
-    "adjustment" "text" DEFAULT 'bookings_data'::"text",
-    "stay_date_mthly" "date",
-    "booking_count" integer GENERATED ALWAYS AS (
-CASE
-    WHEN ("adjustment" = 'bookings_data'::"text") THEN 1
-    ELSE 0
-END) STORED,
-    "cancellation_count" integer GENERATED ALWAYS AS (
-CASE
-    WHEN (("type" = 'cancellation'::"text") AND ("adjustment" = 'bookings_data'::"text")) THEN 1
-    ELSE 0
-END) STORED,
-    "revenue_mthly" numeric GENERATED ALWAYS AS (
-CASE
-    WHEN (("price" IS NULL) OR ("arrival" IS NULL) OR ("departure" IS NULL) OR ("nights_mthly" IS NULL)) THEN NULL::numeric
-    WHEN (("departure" - "arrival") = 0) THEN NULL::numeric
-    ELSE "round"(((("price")::numeric / (("departure" - "arrival"))::numeric) * ("nights_mthly")::numeric), 2)
-END) STORED,
-    "bookings" real,
-    "revenue" numeric GENERATED ALWAYS AS (
-CASE
-    WHEN ("adjustment" = 'monthly_adj'::"text") THEN (0)::real
-    ELSE COALESCE("price", (0)::real)
-END) STORED,
-    "nights" integer GENERATED ALWAYS AS (
-CASE
-    WHEN ("adjustment" = 'monthly_adj'::"text") THEN 0
-    WHEN (("arrival" IS NULL) OR ("departure" IS NULL)) THEN NULL::integer
-    ELSE ("departure" - "arrival")
-END) STORED
-);
+CREATE OR REPLACE VIEW "public"."bookings_mth_adj" AS
+ SELECT "bookings"."email",
+    "bookings"."apartment",
+    "bookings"."arrival",
+    "bookings"."departure",
+    "bookings"."created_at",
+    "bookings"."channel_name",
+    "bookings"."guestname",
+    "bookings"."adults",
+    "bookings"."children",
+    "bookings"."language",
+    "bookings"."type",
+    "bookings"."reservation_id",
+    "bookings"."guestid",
+    "bookings"."guest_email",
+    "bookings"."phone",
+    "bookings"."address_postalcode",
+    "bookings"."address_city",
+    "bookings"."address_country",
+    "bookings"."screener_openai_job",
+    "bookings"."screener_address_check",
+    "bookings"."screener_google_linkedin",
+    "bookings"."screener_phone_check",
+    "bookings"."screener_disposable_email",
+    "bookings"."price",
+    "bookings"."prepayment",
+    "bookings"."deposit",
+    "bookings"."commission_included",
+    "bookings"."price_paid",
+    "bookings"."prepayment_paid",
+    "bookings"."deposit_paid",
+    "bookings"."address_street",
+    'mth_adj'::"text" AS "mth_adj",
+    (("date_trunc"('MONTH'::"text", ("bookings"."arrival")::timestamp with time zone) + '1 mon -1 days'::interval))::"date" AS "stay_mth"
+   FROM "public"."bookings"
+  WHERE (EXTRACT(month FROM "bookings"."arrival") <> EXTRACT(month FROM "bookings"."departure"));
 
 
-ALTER TABLE "public"."bookings_duplicate" OWNER TO "postgres";
+ALTER VIEW "public"."bookings_mth_adj" OWNER TO "postgres";
 
 
-COMMENT ON TABLE "public"."bookings_duplicate" IS 'This is a duplicate of bookings';
+CREATE OR REPLACE VIEW "public"."bookings_mthly" AS
+ SELECT "bookings"."email",
+    "bookings"."apartment",
+    "bookings"."arrival",
+    "bookings"."departure",
+    "bookings"."created_at",
+    "bookings"."channel_name",
+    "bookings"."guestname",
+    "bookings"."adults",
+    "bookings"."children",
+    "bookings"."language",
+    "bookings"."type",
+    "bookings"."reservation_id",
+    "bookings"."guestid",
+    "bookings"."guest_email",
+    "bookings"."phone",
+    "bookings"."address_postalcode",
+    "bookings"."address_city",
+    "bookings"."address_country",
+    "bookings"."screener_openai_job",
+    "bookings"."screener_address_check",
+    "bookings"."screener_google_linkedin",
+    "bookings"."screener_phone_check",
+    "bookings"."screener_disposable_email",
+    "bookings"."price",
+    "bookings"."prepayment",
+    "bookings"."deposit",
+    "bookings"."commission_included",
+    "bookings"."price_paid",
+    "bookings"."prepayment_paid",
+    "bookings"."deposit_paid",
+    "bookings"."address_street",
+    "bookings"."mth_adj"
+   FROM "public"."bookings"
+UNION ALL
+ SELECT "bookings_mth_adj"."email",
+    "bookings_mth_adj"."apartment",
+    "bookings_mth_adj"."arrival",
+    "bookings_mth_adj"."departure",
+    "bookings_mth_adj"."created_at",
+    "bookings_mth_adj"."channel_name",
+    "bookings_mth_adj"."guestname",
+    "bookings_mth_adj"."adults",
+    "bookings_mth_adj"."children",
+    "bookings_mth_adj"."language",
+    "bookings_mth_adj"."type",
+    "bookings_mth_adj"."reservation_id",
+    "bookings_mth_adj"."guestid",
+    "bookings_mth_adj"."guest_email",
+    "bookings_mth_adj"."phone",
+    "bookings_mth_adj"."address_postalcode",
+    "bookings_mth_adj"."address_city",
+    "bookings_mth_adj"."address_country",
+    "bookings_mth_adj"."screener_openai_job",
+    "bookings_mth_adj"."screener_address_check",
+    "bookings_mth_adj"."screener_google_linkedin",
+    "bookings_mth_adj"."screener_phone_check",
+    "bookings_mth_adj"."screener_disposable_email",
+    "bookings_mth_adj"."price",
+    "bookings_mth_adj"."prepayment",
+    "bookings_mth_adj"."deposit",
+    "bookings_mth_adj"."commission_included",
+    "bookings_mth_adj"."price_paid",
+    "bookings_mth_adj"."prepayment_paid",
+    "bookings_mth_adj"."deposit_paid",
+    "bookings_mth_adj"."address_street",
+    "bookings_mth_adj"."mth_adj"
+   FROM "public"."bookings_mth_adj";
 
 
-
-ALTER TABLE "public"."bookings" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME "public"."bookings_new_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
+ALTER VIEW "public"."bookings_mthly" OWNER TO "postgres";
 
 
 ALTER TABLE ONLY "public"."bookings"
-    ADD CONSTRAINT "bookings_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."bookings"
-    ADD CONSTRAINT "unique_booking" UNIQUE ("reservation_id", "email");
+    ADD CONSTRAINT "unique_id" UNIQUE ("reservation_id", "email");
 
 
 
@@ -477,15 +461,15 @@ GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public".
 
 
 
-GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_duplicate" TO "anon";
-GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_duplicate" TO "authenticated";
-GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_duplicate" TO "service_role";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mth_adj" TO "anon";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mth_adj" TO "authenticated";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mth_adj" TO "service_role";
 
 
 
-GRANT ALL ON SEQUENCE "public"."bookings_new_id_seq" TO "anon";
-GRANT ALL ON SEQUENCE "public"."bookings_new_id_seq" TO "authenticated";
-GRANT ALL ON SEQUENCE "public"."bookings_new_id_seq" TO "service_role";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "anon";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "authenticated";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "service_role";
 
 
 

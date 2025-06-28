@@ -116,7 +116,9 @@ CREATE TABLE IF NOT EXISTS "public"."bookings" (
     "deposit_paid" "text",
     "address_street" "text",
     "mth_adj" "text" DEFAULT 'bookings'::"text",
-    "stay_mth" "date" GENERATED ALWAYS AS ("departure") STORED
+    "stay_mth" "date" GENERATED ALWAYS AS ("departure") STORED,
+    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
+    "modified_at" "date"
 );
 
 
@@ -129,6 +131,7 @@ CREATE OR REPLACE VIEW "public"."bookings_mth_adj" AS
     "bookings"."arrival",
     "bookings"."departure",
     "bookings"."created_at",
+    "bookings"."modified_at",
     "bookings"."channel_name",
     "bookings"."guestname",
     "bookings"."adults",
@@ -170,6 +173,7 @@ CREATE OR REPLACE VIEW "public"."bookings_mthly" AS
     "bookings"."arrival",
     "bookings"."departure",
     "bookings"."created_at",
+    "bookings"."modified_at",
     "bookings"."channel_name",
     "bookings"."guestname",
     "bookings"."adults",
@@ -204,6 +208,7 @@ UNION ALL
     "bookings_mth_adj"."arrival",
     "bookings_mth_adj"."departure",
     "bookings_mth_adj"."created_at",
+    "bookings_mth_adj"."modified_at",
     "bookings_mth_adj"."channel_name",
     "bookings_mth_adj"."guestname",
     "bookings_mth_adj"."adults",
@@ -235,6 +240,11 @@ UNION ALL
 
 
 ALTER VIEW "public"."bookings_mthly" OWNER TO "postgres";
+
+
+ALTER TABLE ONLY "public"."bookings"
+    ADD CONSTRAINT "bookings_pkey" PRIMARY KEY ("id");
+
 
 
 ALTER TABLE ONLY "public"."bookings"

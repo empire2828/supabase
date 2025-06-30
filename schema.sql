@@ -118,7 +118,8 @@ CREATE TABLE IF NOT EXISTS "public"."bookings" (
     "mth_adj" "text" DEFAULT 'bookings'::"text",
     "stay_mth" "date" GENERATED ALWAYS AS ("departure") STORED,
     "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
-    "modified_at" "date"
+    "modified_at" "date",
+    "supabase_key" "text"
 );
 
 
@@ -159,6 +160,7 @@ CREATE OR REPLACE VIEW "public"."bookings_mth_adj" AS
     "bookings"."deposit_paid",
     "bookings"."address_street",
     'mth_adj'::"text" AS "mth_adj",
+    "bookings"."supabase_key",
     (("date_trunc"('MONTH'::"text", ("bookings"."arrival")::timestamp with time zone) + '1 mon -1 days'::interval))::"date" AS "stay_mth"
    FROM "public"."bookings"
   WHERE (EXTRACT(month FROM "bookings"."arrival") <> EXTRACT(month FROM "bookings"."departure"));
@@ -200,7 +202,8 @@ CREATE OR REPLACE VIEW "public"."bookings_mthly" AS
     "bookings"."prepayment_paid",
     "bookings"."deposit_paid",
     "bookings"."address_street",
-    "bookings"."mth_adj"
+    "bookings"."mth_adj",
+    "bookings"."supabase_key"
    FROM "public"."bookings"
 UNION ALL
  SELECT "bookings_mth_adj"."email",
@@ -235,7 +238,8 @@ UNION ALL
     "bookings_mth_adj"."prepayment_paid",
     "bookings_mth_adj"."deposit_paid",
     "bookings_mth_adj"."address_street",
-    "bookings_mth_adj"."mth_adj"
+    "bookings_mth_adj"."mth_adj",
+    "bookings_mth_adj"."supabase_key"
    FROM "public"."bookings_mth_adj";
 
 

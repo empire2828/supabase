@@ -246,8 +246,21 @@ UNION ALL
 ALTER VIEW "public"."bookings_mthly" OWNER TO "postgres";
 
 
+CREATE TABLE IF NOT EXISTS "public"."calendar" (
+    "date" "date" NOT NULL
+);
+
+
+ALTER TABLE "public"."calendar" OWNER TO "postgres";
+
+
 ALTER TABLE ONLY "public"."bookings"
     ADD CONSTRAINT "bookings_pkey" PRIMARY KEY ("id");
+
+
+
+ALTER TABLE ONLY "public"."calendar"
+    ADD CONSTRAINT "calendar_pkey" PRIMARY KEY ("date");
 
 
 
@@ -484,6 +497,12 @@ GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public".
 GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "anon";
 GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "authenticated";
 GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "service_role";
+
+
+
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."calendar" TO "anon";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."calendar" TO "authenticated";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."calendar" TO "service_role";
 
 
 

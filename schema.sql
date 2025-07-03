@@ -169,6 +169,14 @@ CREATE OR REPLACE VIEW "public"."bookings_mth_adj" AS
 ALTER VIEW "public"."bookings_mth_adj" OWNER TO "postgres";
 
 
+CREATE TABLE IF NOT EXISTS "public"."calendar" (
+    "date" "date" NOT NULL
+);
+
+
+ALTER TABLE "public"."calendar" OWNER TO "postgres";
+
+
 CREATE OR REPLACE VIEW "public"."bookings_mthly" AS
  SELECT "bookings"."email",
     "bookings"."apartment",
@@ -240,18 +248,46 @@ UNION ALL
     "bookings_mth_adj"."address_street",
     "bookings_mth_adj"."mth_adj",
     "bookings_mth_adj"."supabase_key"
-   FROM "public"."bookings_mth_adj";
+   FROM "public"."bookings_mth_adj"
+UNION ALL
+ SELECT NULL::"text" AS "email",
+    'calendar'::"text" AS "apartment",
+    NULL::"date" AS "arrival",
+    "calendar"."date" AS "departure",
+    NULL::"date" AS "created_at",
+    NULL::"date" AS "modified_at",
+    'calendar'::"text" AS "channel_name",
+    'calendar'::"text" AS "guestname",
+    NULL::integer AS "adults",
+    NULL::integer AS "children",
+    NULL::"text" AS "language",
+    'calendar'::"text" AS "type",
+    NULL::integer AS "reservation_id",
+    NULL::integer AS "guestid",
+    NULL::"text" AS "guest_email",
+    NULL::"text" AS "phone",
+    NULL::"text" AS "address_postalcode",
+    NULL::"text" AS "address_city",
+    NULL::"text" AS "address_country",
+    NULL::"text" AS "screener_openai_job",
+    NULL::boolean AS "screener_address_check",
+    NULL::"text" AS "screener_google_linkedin",
+    NULL::boolean AS "screener_phone_check",
+    NULL::boolean AS "screener_disposable_email",
+    NULL::numeric AS "price",
+    NULL::numeric AS "prepayment",
+    NULL::numeric AS "deposit",
+    NULL::numeric AS "commission_included",
+    NULL::"text" AS "price_paid",
+    NULL::"text" AS "prepayment_paid",
+    NULL::"text" AS "deposit_paid",
+    NULL::"text" AS "address_street",
+    'calendar'::"text" AS "mth_adj",
+    'calendar'::"text" AS "supabase_key"
+   FROM "public"."calendar";
 
 
 ALTER VIEW "public"."bookings_mthly" OWNER TO "postgres";
-
-
-CREATE TABLE IF NOT EXISTS "public"."calendar" (
-    "date" "date" NOT NULL
-);
-
-
-ALTER TABLE "public"."calendar" OWNER TO "postgres";
 
 
 ALTER TABLE ONLY "public"."bookings"
@@ -494,15 +530,15 @@ GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public".
 
 
 
-GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "anon";
-GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "authenticated";
-GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "service_role";
-
-
-
 GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."calendar" TO "anon";
 GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."calendar" TO "authenticated";
 GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."calendar" TO "service_role";
+
+
+
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "anon";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "authenticated";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "service_role";
 
 
 

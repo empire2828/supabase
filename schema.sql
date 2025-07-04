@@ -251,13 +251,13 @@ UNION ALL
    FROM "public"."bookings_mth_adj"
 UNION ALL
  SELECT NULL::"text" AS "email",
-    'calendar'::"text" AS "apartment",
+    NULL::"text" AS "apartment",
     NULL::"date" AS "arrival",
     "calendar"."date" AS "departure",
     NULL::"date" AS "created_at",
     NULL::"date" AS "modified_at",
     'calendar'::"text" AS "channel_name",
-    'calendar'::"text" AS "guestname",
+    NULL::"text" AS "guestname",
     NULL::integer AS "adults",
     NULL::integer AS "children",
     NULL::"text" AS "language",

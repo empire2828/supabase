@@ -119,7 +119,13 @@ CREATE TABLE IF NOT EXISTS "public"."bookings" (
     "stay_mth" "date" GENERATED ALWAYS AS ("departure") STORED,
     "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
     "modified_at" "date",
-    "supabase_key" "text"
+    "supabase_key" "text",
+    "price_baseprice" real,
+    "price_cleaningfee" real,
+    "price_longstaydiscount" real,
+    "price_coupon" real,
+    "price_addon" real,
+    "price_curr" "text"
 );
 
 
@@ -161,6 +167,12 @@ CREATE OR REPLACE VIEW "public"."bookings_mth_adj" AS
     "bookings"."address_street",
     'mth_adj'::"text" AS "mth_adj",
     "bookings"."supabase_key",
+    "bookings"."price_baseprice",
+    "bookings"."price_cleaningfee",
+    "bookings"."price_longstaydiscount",
+    "bookings"."price_coupon",
+    "bookings"."price_addon",
+    "bookings"."price_curr",
     (("date_trunc"('MONTH'::"text", ("bookings"."arrival")::timestamp with time zone) + '1 mon -1 days'::interval))::"date" AS "stay_mth"
    FROM "public"."bookings"
   WHERE (EXTRACT(month FROM "bookings"."arrival") <> EXTRACT(month FROM "bookings"."departure"));
@@ -211,7 +223,13 @@ CREATE OR REPLACE VIEW "public"."bookings_mthly" AS
     "bookings"."deposit_paid",
     "bookings"."address_street",
     "bookings"."mth_adj",
-    "bookings"."supabase_key"
+    "bookings"."supabase_key",
+    "bookings"."price_baseprice",
+    "bookings"."price_cleaningfee",
+    "bookings"."price_longstaydiscount",
+    "bookings"."price_coupon",
+    "bookings"."price_addon",
+    "bookings"."price_curr"
    FROM "public"."bookings"
 UNION ALL
  SELECT "bookings_mth_adj"."email",
@@ -247,7 +265,13 @@ UNION ALL
     "bookings_mth_adj"."deposit_paid",
     "bookings_mth_adj"."address_street",
     "bookings_mth_adj"."mth_adj",
-    "bookings_mth_adj"."supabase_key"
+    "bookings_mth_adj"."supabase_key",
+    "bookings_mth_adj"."price_baseprice",
+    "bookings_mth_adj"."price_cleaningfee",
+    "bookings_mth_adj"."price_longstaydiscount",
+    "bookings_mth_adj"."price_coupon",
+    "bookings_mth_adj"."price_addon",
+    "bookings_mth_adj"."price_curr"
    FROM "public"."bookings_mth_adj"
 UNION ALL
  SELECT NULL::"text" AS "email",
@@ -283,7 +307,13 @@ UNION ALL
     NULL::"text" AS "deposit_paid",
     NULL::"text" AS "address_street",
     'calendar'::"text" AS "mth_adj",
-    'calendar'::"text" AS "supabase_key"
+    'calendar'::"text" AS "supabase_key",
+    NULL::numeric AS "price_baseprice",
+    NULL::numeric AS "price_cleaningfee",
+    NULL::numeric AS "price_longstaydiscount",
+    NULL::numeric AS "price_coupon",
+    NULL::numeric AS "price_addon",
+    NULL::"text" AS "price_curr"
    FROM "public"."calendar";
 
 

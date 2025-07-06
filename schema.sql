@@ -91,8 +91,8 @@ CREATE TABLE IF NOT EXISTS "public"."bookings" (
     "created_at" "date",
     "channel_name" "text",
     "guestname" "text",
-    "adults" integer,
-    "children" integer,
+    "adults" integer DEFAULT 0,
+    "children" integer DEFAULT 0,
     "language" "text",
     "type" "text",
     "reservation_id" integer NOT NULL,
@@ -107,10 +107,10 @@ CREATE TABLE IF NOT EXISTS "public"."bookings" (
     "screener_google_linkedin" "text",
     "screener_phone_check" boolean,
     "screener_disposable_email" boolean,
-    "price" real,
-    "prepayment" real,
+    "price" real DEFAULT 0,
+    "prepayment" real DEFAULT 0,
     "deposit" real,
-    "commission_included" real,
+    "commission_included" real DEFAULT 0,
     "price_paid" "text",
     "prepayment_paid" "text",
     "deposit_paid" "text",
@@ -120,12 +120,13 @@ CREATE TABLE IF NOT EXISTS "public"."bookings" (
     "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"() NOT NULL,
     "modified_at" "date",
     "supabase_key" "text",
-    "price_baseprice" real,
-    "price_cleaningfee" real,
-    "price_longstaydiscount" real,
-    "price_coupon" real,
-    "price_addon" real,
-    "price_curr" "text"
+    "price_baseprice" real DEFAULT 0,
+    "price_cleaningfee" real DEFAULT 0,
+    "price_longstaydiscount" real DEFAULT 0,
+    "price_coupon" real DEFAULT 0,
+    "price_addon" real DEFAULT 0,
+    "price_curr" "text",
+    "price_comm" real
 );
 
 
@@ -173,6 +174,7 @@ CREATE OR REPLACE VIEW "public"."bookings_mth_adj" AS
     "bookings"."price_coupon",
     "bookings"."price_addon",
     "bookings"."price_curr",
+    "bookings"."price_comm",
     (("date_trunc"('MONTH'::"text", ("bookings"."arrival")::timestamp with time zone) + '1 mon -1 days'::interval))::"date" AS "stay_mth"
    FROM "public"."bookings"
   WHERE (EXTRACT(month FROM "bookings"."arrival") <> EXTRACT(month FROM "bookings"."departure"));
@@ -189,7 +191,165 @@ CREATE TABLE IF NOT EXISTS "public"."calendar" (
 ALTER TABLE "public"."calendar" OWNER TO "postgres";
 
 
+CREATE TABLE IF NOT EXISTS "public"."parameter" (
+    "id" bigint NOT NULL,
+    "supabase_key" "text",
+    "std_cleaning_fee" real,
+    "std_linen_fee" real,
+    "use_own_std_fees" boolean,
+    "email" "text"
+);
+
+
+ALTER TABLE "public"."parameter" OWNER TO "postgres";
+
+
 CREATE OR REPLACE VIEW "public"."bookings_mthly" AS
+ SELECT "b"."email",
+    "b"."apartment",
+    "b"."arrival",
+    "b"."departure",
+    "b"."created_at",
+    "b"."modified_at",
+    "b"."channel_name",
+    "b"."guestname",
+    "b"."adults",
+    "b"."children",
+    "b"."language",
+    "b"."type",
+    "b"."reservation_id",
+    "b"."guestid",
+    "b"."guest_email",
+    "b"."phone",
+    "b"."address_postalcode",
+    "b"."address_city",
+    "b"."address_country",
+    "b"."screener_openai_job",
+    "b"."screener_address_check",
+    "b"."screener_google_linkedin",
+    "b"."screener_phone_check",
+    "b"."screener_disposable_email",
+    "b"."price",
+    "b"."prepayment",
+    "b"."deposit",
+    "b"."commission_included",
+    "b"."price_paid",
+    "b"."prepayment_paid",
+    "b"."deposit_paid",
+    "b"."address_street",
+    "b"."mth_adj",
+    "b"."supabase_key",
+    "b"."price_baseprice",
+    "b"."price_cleaningfee",
+    "b"."price_longstaydiscount",
+    "b"."price_coupon",
+    "b"."price_addon",
+    "b"."price_curr",
+    "b"."price_comm",
+    "p"."std_cleaning_fee",
+    "p"."std_linen_fee",
+    "p"."use_own_std_fees"
+   FROM ("public"."bookings" "b"
+     LEFT JOIN "public"."parameter" "p" ON (("b"."email" = "p"."email")))
+UNION ALL
+ SELECT "bma"."email",
+    "bma"."apartment",
+    "bma"."arrival",
+    "bma"."departure",
+    "bma"."created_at",
+    "bma"."modified_at",
+    "bma"."channel_name",
+    "bma"."guestname",
+    "bma"."adults",
+    "bma"."children",
+    "bma"."language",
+    "bma"."type",
+    "bma"."reservation_id",
+    "bma"."guestid",
+    "bma"."guest_email",
+    "bma"."phone",
+    "bma"."address_postalcode",
+    "bma"."address_city",
+    "bma"."address_country",
+    "bma"."screener_openai_job",
+    "bma"."screener_address_check",
+    "bma"."screener_google_linkedin",
+    "bma"."screener_phone_check",
+    "bma"."screener_disposable_email",
+    "bma"."price",
+    "bma"."prepayment",
+    "bma"."deposit",
+    "bma"."commission_included",
+    "bma"."price_paid",
+    "bma"."prepayment_paid",
+    "bma"."deposit_paid",
+    "bma"."address_street",
+    "bma"."mth_adj",
+    "bma"."supabase_key",
+    "bma"."price_baseprice",
+    "bma"."price_cleaningfee",
+    "bma"."price_longstaydiscount",
+    "bma"."price_coupon",
+    "bma"."price_addon",
+    "bma"."price_curr",
+    "bma"."price_comm",
+    "p"."std_cleaning_fee",
+    "p"."std_linen_fee",
+    "p"."use_own_std_fees"
+   FROM ("public"."bookings_mth_adj" "bma"
+     LEFT JOIN "public"."parameter" "p" ON (("bma"."email" = "p"."email")))
+UNION ALL
+ SELECT NULL::"text" AS "email",
+    NULL::"text" AS "apartment",
+    NULL::"date" AS "arrival",
+    "c"."date" AS "departure",
+    NULL::"date" AS "created_at",
+    NULL::"date" AS "modified_at",
+    'calendar'::"text" AS "channel_name",
+    NULL::"text" AS "guestname",
+    NULL::integer AS "adults",
+    NULL::integer AS "children",
+    NULL::"text" AS "language",
+    'calendar'::"text" AS "type",
+    NULL::integer AS "reservation_id",
+    NULL::integer AS "guestid",
+    NULL::"text" AS "guest_email",
+    NULL::"text" AS "phone",
+    NULL::"text" AS "address_postalcode",
+    NULL::"text" AS "address_city",
+    NULL::"text" AS "address_country",
+    NULL::"text" AS "screener_openai_job",
+    NULL::boolean AS "screener_address_check",
+    NULL::"text" AS "screener_google_linkedin",
+    NULL::boolean AS "screener_phone_check",
+    NULL::boolean AS "screener_disposable_email",
+    NULL::numeric AS "price",
+    NULL::numeric AS "prepayment",
+    NULL::numeric AS "deposit",
+    NULL::numeric AS "commission_included",
+    NULL::"text" AS "price_paid",
+    NULL::"text" AS "prepayment_paid",
+    NULL::"text" AS "deposit_paid",
+    NULL::"text" AS "address_street",
+    'calendar'::"text" AS "mth_adj",
+    'calendar'::"text" AS "supabase_key",
+    NULL::numeric AS "price_baseprice",
+    NULL::numeric AS "price_cleaningfee",
+    NULL::numeric AS "price_longstaydiscount",
+    NULL::numeric AS "price_coupon",
+    NULL::numeric AS "price_addon",
+    NULL::"text" AS "price_curr",
+    NULL::numeric AS "price_comm",
+    NULL::real AS "std_cleaning_fee",
+    NULL::real AS "std_linen_fee",
+    NULL::boolean AS "use_own_std_fees"
+   FROM "public"."calendar" "c";
+
+
+ALTER VIEW "public"."bookings_mthly" OWNER TO "postgres";
+
+
+CREATE OR REPLACE VIEW "public"."bookings_mthly_bak" AS
  SELECT "bookings"."email",
     "bookings"."apartment",
     "bookings"."arrival",
@@ -229,7 +389,8 @@ CREATE OR REPLACE VIEW "public"."bookings_mthly" AS
     "bookings"."price_longstaydiscount",
     "bookings"."price_coupon",
     "bookings"."price_addon",
-    "bookings"."price_curr"
+    "bookings"."price_curr",
+    "bookings"."price_comm"
    FROM "public"."bookings"
 UNION ALL
  SELECT "bookings_mth_adj"."email",
@@ -271,7 +432,8 @@ UNION ALL
     "bookings_mth_adj"."price_longstaydiscount",
     "bookings_mth_adj"."price_coupon",
     "bookings_mth_adj"."price_addon",
-    "bookings_mth_adj"."price_curr"
+    "bookings_mth_adj"."price_curr",
+    "bookings_mth_adj"."price_comm"
    FROM "public"."bookings_mth_adj"
 UNION ALL
  SELECT NULL::"text" AS "email",
@@ -313,11 +475,23 @@ UNION ALL
     NULL::numeric AS "price_longstaydiscount",
     NULL::numeric AS "price_coupon",
     NULL::numeric AS "price_addon",
-    NULL::"text" AS "price_curr"
+    NULL::"text" AS "price_curr",
+    NULL::numeric AS "price_comm"
    FROM "public"."calendar";
 
 
-ALTER VIEW "public"."bookings_mthly" OWNER TO "postgres";
+ALTER VIEW "public"."bookings_mthly_bak" OWNER TO "postgres";
+
+
+ALTER TABLE "public"."parameter" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME "public"."parameter_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
 
 
 ALTER TABLE ONLY "public"."bookings"
@@ -327,6 +501,16 @@ ALTER TABLE ONLY "public"."bookings"
 
 ALTER TABLE ONLY "public"."calendar"
     ADD CONSTRAINT "calendar_pkey" PRIMARY KEY ("date");
+
+
+
+ALTER TABLE ONLY "public"."parameter"
+    ADD CONSTRAINT "parameter_pkey" PRIMARY KEY ("id");
+
+
+
+ALTER TABLE ONLY "public"."parameter"
+    ADD CONSTRAINT "unique_email" UNIQUE ("email");
 
 
 
@@ -566,9 +750,27 @@ GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public".
 
 
 
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."parameter" TO "anon";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."parameter" TO "authenticated";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."parameter" TO "service_role";
+
+
+
 GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "anon";
 GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "authenticated";
 GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly" TO "service_role";
+
+
+
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly_bak" TO "anon";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly_bak" TO "authenticated";
+GRANT SELECT,INSERT,REFERENCES,DELETE,TRIGGER,TRUNCATE,UPDATE ON TABLE "public"."bookings_mthly_bak" TO "service_role";
+
+
+
+GRANT ALL ON SEQUENCE "public"."parameter_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."parameter_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."parameter_id_seq" TO "service_role";
 
 
 

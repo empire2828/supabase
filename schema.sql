@@ -58,26 +58,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
 
 
-
-CREATE OR REPLACE FUNCTION "public"."set_nights_mthly"() RETURNS "trigger"
-    LANGUAGE "plpgsql"
-    AS $$
-BEGIN
-  IF NEW.arrival IS NULL OR NEW.departure IS NULL THEN
-    NEW.nights_mthly := NULL;
-  ELSIF date_part('year', NEW.arrival) = date_part('year', NEW.departure)
-        AND date_part('month', NEW.arrival) = date_part('month', NEW.departure) THEN
-    NEW.nights_mthly := NEW.departure - NEW.arrival;
-  ELSE
-    NEW.nights_mthly := NEW.departure - make_date(date_part('year', NEW.departure)::int, date_part('month', NEW.departure)::int, 1);
-  END IF;
-  RETURN NEW;
-END;
-$$;
-
-
-ALTER FUNCTION "public"."set_nights_mthly"() OWNER TO "postgres";
-
 SET default_tablespace = '';
 
 SET default_table_access_method = "heap";
@@ -702,12 +682,6 @@ GRANT USAGE ON SCHEMA "public" TO "service_role";
 
 
 
-
-
-
-GRANT ALL ON FUNCTION "public"."set_nights_mthly"() TO "anon";
-GRANT ALL ON FUNCTION "public"."set_nights_mthly"() TO "authenticated";
-GRANT ALL ON FUNCTION "public"."set_nights_mthly"() TO "service_role";
 
 
 

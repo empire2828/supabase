@@ -192,7 +192,8 @@ CREATE TABLE IF NOT EXISTS "public"."parameter" (
     "std_cleaning_fee" real,
     "std_linen_fee" real,
     "use_own_std_fees" boolean,
-    "email" "text"
+    "email" "text",
+    "apartment" "text"
 );
 
 

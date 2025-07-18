@@ -723,7 +723,7 @@ ALTER TABLE ONLY "public"."parameter"
 
 
 ALTER TABLE ONLY "public"."std_commission"
-    ADD CONSTRAINT "unique_email2" UNIQUE ("email");
+    ADD CONSTRAINT "unique_email_channel_name" UNIQUE ("email", "channel_name");
 
 
 

@@ -121,7 +121,8 @@ CREATE TABLE IF NOT EXISTS "public"."bookings" (
     "price_coupon" real DEFAULT 0,
     "price_addon" real DEFAULT 0,
     "price_curr" "text",
-    "price_comm" real
+    "price_comm" real,
+    "timestamp" timestamp with time zone DEFAULT "now"()
 );
 
 
@@ -652,7 +653,8 @@ CREATE TABLE IF NOT EXISTS "public"."logs" (
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "message" "text",
     "email" "text",
-    "function" "text"
+    "function" "text",
+    "ref_id" "text"
 );
 
 
